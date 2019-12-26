@@ -1,58 +1,56 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 
 
 function withMemeGenerator(WrappedComponent) {
-  return class extends React.Component {
-    state = {
+  return (props) => {
+    const [inputs, setInputs] = useState({
       topText: "",
-      bottomText: "",
-      randomImg: "http://i.imgflip.com/1bij.jpg",
-      allMemeImgs: []
-    };
-
+      bottomText: ""
+    });
+    const [randomImg, setRandomImg] = useState("http://i.imgflip.com/1bij.jpg");
+    const [allMemeImgs, setAllMemeImgs] = useState([]);
     
-    componentDidMount() {
-      fetch("https://api.imgflip.com/get_memes")
-        .then(response => response.json())
-        .then(response => {
-          const { memes } = response.data;
-          
-          this.setState({
-            allMemeImgs: memes
-          })
-        })
-    }
     
-    handleChange = (event) => {
-      const { name, value } = event.target;
+    useEffect(() => {
+      const fetchData = async () => {
+        const response = await fetch("https://api.imgflip.com/get_memes");
+        const json = await response.json();
+        const { memes } = json.data;
+  
+        setAllMemeImgs(memes);
+      };
       
-      this.setState({
-        [ name ]: value
-      })
+      fetchData();
+    }, []);
+    
+    const handleChange = (event) => {
+      const { name, value } = event.target;
+  
+      const newState = { ...inputs };
+      newState[ name ] = value;
+      
+      setInputs(newState);
     };
     
-    handleSubmit = (event) => {
+    const handleSubmit = (event) => {
       event.preventDefault();
       
-      const randNum = Math.floor(Math.random() * this.state.allMemeImgs.length);
-      const randMemeImg = this.state.allMemeImgs[ randNum ].url;
-      
-      this.setState({
-        randomImg: randMemeImg
-      });
+      const randNum = Math.floor(Math.random() * allMemeImgs.length);
+      const randMemeImg = allMemeImgs[ randNum ].url;
+  
+      setRandomImg(randMemeImg);
     };
     
-    render() {
-      return (
-        <WrappedComponent
-          { ...this.props }
-          { ...this.state }
-          handleChange={ this.handleChange }
-          handleSubmit={ this.handleSubmit }
-        />
-      )
-    }
+    return (
+      <WrappedComponent
+        { ...props }
+        { ...inputs }
+        randomImg={ randomImg }
+        handleChange={ handleChange }
+        handleSubmit={ handleSubmit }
+      />
+    )
   }
 }
 
