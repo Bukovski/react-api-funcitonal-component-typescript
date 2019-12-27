@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 
 
-
 function withMemeGenerator(WrappedComponent) {
   return (props) => {
     const [inputs, setInputs] = useState({
@@ -14,11 +13,15 @@ function withMemeGenerator(WrappedComponent) {
     
     useEffect(() => {
       const fetchData = async () => {
-        const response = await fetch("https://api.imgflip.com/get_memes");
-        const json = await response.json();
-        const { memes } = json.data;
-  
-        setAllMemeImgs(memes);
+        try {
+          const response = await fetch("https://api.imgflip.com/get_memes");
+          const json = await response.json();
+          const { memes } = json.data;
+          
+          setAllMemeImgs(memes);
+        } catch (e) {
+          console.log(e)
+        }
       };
       
       fetchData();
@@ -26,7 +29,7 @@ function withMemeGenerator(WrappedComponent) {
     
     const handleChange = (event) => {
       const { name, value } = event.target;
-  
+      
       const newState = { ...inputs };
       newState[ name ] = value;
       
@@ -38,7 +41,7 @@ function withMemeGenerator(WrappedComponent) {
       
       const randNum = Math.floor(Math.random() * allMemeImgs.length);
       const randMemeImg = allMemeImgs[ randNum ].url;
-  
+      
       setRandomImg(randMemeImg);
     };
     

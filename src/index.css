@@ -32,6 +32,7 @@ header > p {
   position: relative;
   width: 90%;
   margin: auto;
+  min-height: 600px;
 }
 
 .meme > img {
