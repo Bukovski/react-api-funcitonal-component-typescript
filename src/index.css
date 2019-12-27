@@ -83,8 +83,10 @@ header > p {
 }
 
 .meme-form > input {
+  padding-left: 10px;
   width: 45%;
   height: 40px;
+  font-size: 22px;
 }
 
 .meme-form > button {

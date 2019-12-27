@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 
 function withMemeGenerator(WrappedComponent) {
   return (props) => {
+    const { onLoaded, onLoadStart, onError, hasData, children } = props;
+    
     const [inputs, setInputs] = useState({
       topText: "",
       bottomText: ""
@@ -12,15 +14,19 @@ function withMemeGenerator(WrappedComponent) {
     
     
     useEffect(() => {
+      onLoadStart();
+      
       const fetchData = async () => {
         try {
+          
           const response = await fetch("https://api.imgflip.com/get_memes");
           const json = await response.json();
           const { memes } = json.data;
           
           setAllMemeImgs(memes);
+          onLoaded();
         } catch (e) {
-          console.log(e)
+          onError()
         }
       };
       
@@ -46,13 +52,22 @@ function withMemeGenerator(WrappedComponent) {
     };
     
     return (
-      <WrappedComponent
-        { ...props }
-        { ...inputs }
-        randomImg={ randomImg }
-        handleChange={ handleChange }
-        handleSubmit={ handleSubmit }
-      />
+      <React.Fragment>
+        { children }
+        
+        {
+          hasData
+            ? <WrappedComponent
+              { ...props }
+              { ...inputs }
+              randomImg={ randomImg }
+              handleChange={ handleChange }
+              handleSubmit={ handleSubmit }
+            />
+            : null
+        }
+      
+      </React.Fragment>
     )
   }
 }
