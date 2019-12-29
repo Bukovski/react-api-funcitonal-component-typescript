@@ -4,9 +4,9 @@ import { MemeGenerator, withMemeGenerator } from "../../components/meme-generato
 import { ErrorBoundry, withLoadIndicator } from "../../components/error";
 
 
-const MemeGeneratorView = withLoadIndicator(withMemeGenerator(MemeGenerator));
+const MemeGeneratorView: any = withLoadIndicator(withMemeGenerator(MemeGenerator));
 
-function App() {
+function App(): JSX.Element {
   return (
     <div>
       <Header />
@@ -17,5 +17,6 @@ function App() {
     </div>
   )
 }
+
 
 export default App;
