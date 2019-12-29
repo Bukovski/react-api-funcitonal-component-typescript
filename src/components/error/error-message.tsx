@@ -2,7 +2,7 @@ import React from "react";
 import "./error-message.css"
 
 
-export default function ErrorMessage() {
+export default function ErrorMessage(): JSX.Element {
   return (
     <div className="error-indicator">
       <svg className="error-image" viewBox="0 0 490 525">

@@ -1,7 +1,7 @@
 import React from "react";
 
 
-function Header() {
+function Header(): JSX.Element {
   return (
     <header>
       <img

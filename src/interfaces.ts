@@ -1,3 +1,6 @@
+import React from "react";
+
+
 export interface IMemeGenerator {
   topText: string,
   bottomText: string,
@@ -16,11 +19,11 @@ export interface IMemesCollection {
 }
 
 export interface ILoadIndicator {
-  onLoaded: any,
-  onLoadStart: any,
-  onError: any,
+  onLoaded: () => void,
+  onLoadStart: () => void,
+  onError: () => void,
   hasData: boolean,
-  children: any
+  children: React.ReactNode
 }
 
 

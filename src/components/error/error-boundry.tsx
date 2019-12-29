@@ -11,9 +11,7 @@ class ErrorBoundry extends React.Component<object, IErrorBoundryState> {
     hasError: false
   };
 
-  componentDidCatch(x: any, y: any) {
-    console.log(x, y);
-
+  componentDidCatch() {
     this.setState({ hasError: true });
   }
 
