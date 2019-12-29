@@ -1,7 +1,9 @@
 import React from "react";
+import { IMemeGenerator } from "../../interfaces";
 
 
-const MemeGenerator = (props) => {
+
+const MemeGenerator = (props: IMemeGenerator) => {
   const { topText, bottomText, randomImg, handleChange, handleSubmit } = props;
   
   return (
@@ -26,7 +28,7 @@ const MemeGenerator = (props) => {
       </form>
       
       <div className="meme">
-        <img align="center" src={ randomImg } alt="meme" />
+        <img src={ randomImg } alt="meme" />
         <h2 className="top">{ topText }</h2>
         <h2 className="bottom">{ bottomText }</h2>
       </div>

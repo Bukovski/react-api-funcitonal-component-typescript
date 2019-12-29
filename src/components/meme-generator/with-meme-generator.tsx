@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from "react";
+import { ILoadIndicator, IMemesCollection } from "../../interfaces";
 
 
-function withMemeGenerator(WrappedComponent) {
-  return (props) => {
+interface Iinputs {
+  topText: string,
+  bottomText: string
+}
+
+function withMemeGenerator<P>(WrappedComponent: React.ComponentType<P>) {
+  return (props: ILoadIndicator & P) => {
     const { onLoaded, onLoadStart, onError, hasData, children } = props;
     
-    const [inputs, setInputs] = useState({
+    const [inputs, setInputs] = useState<Iinputs>({
       topText: "",
       bottomText: ""
     });
-    const [randomImg, setRandomImg] = useState("http://i.imgflip.com/1bij.jpg");
-    const [allMemeImgs, setAllMemeImgs] = useState([]);
+    const [randomImg, setRandomImg] = useState<string>("http://i.imgflip.com/1bij.jpg");
+    const [allMemeImgs, setAllMemeImgs] = useState<IMemesCollection[]>([]);
     
     
     useEffect(() => {
@@ -33,8 +39,11 @@ function withMemeGenerator(WrappedComponent) {
       fetchData();
     }, []);
     
-    const handleChange = (event) => {
-      const { name, value } = event.target;
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+      const { name, value } = event.target as HTMLInputElement & {
+        name: keyof Iinputs,
+        value: string
+      };
       
       const newState = { ...inputs };
       newState[ name ] = value;
@@ -42,10 +51,10 @@ function withMemeGenerator(WrappedComponent) {
       setInputs(newState);
     };
     
-    const handleSubmit = (event) => {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
       event.preventDefault();
       
-      const randNum = Math.floor(Math.random() * allMemeImgs.length);
+      const randNum: number = Math.floor(Math.random() * allMemeImgs.length);
       const randMemeImg = allMemeImgs[ randNum ].url;
       
       setRandomImg(randMemeImg);
